@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+@*<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">*@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="@Url.Action("resources_","home")"></script>
+    <script>
+        var defaultLanguage = "@Request.UserLanguages[0]";
+        var T = function (key) {
+            return _T[key + "_" + defaultLanguage] || _T[key + "_en"];
+        }
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", new { success = true }, new { @class = "contact-btn success" })</li>
+                    <li>@Html.ActionLink("Contact Error", "Contact", new { success = false }, new { @class = "contact-btn  error" })</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/ajax-file-download.js"></script>
+    <script>
+        $('.contact-btn').click(function (event) {
+            event.preventDefault();
+            initiateDownload($(this).attr("href"), null, function () {
+                alert(T("ErrorMessage"));
+            });
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
